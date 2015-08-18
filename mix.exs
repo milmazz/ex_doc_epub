@@ -3,7 +3,7 @@ defmodule ExDocEPUB.Mixfile do
 
   def project do
     [app: :ex_doc_epub,
-     version: "0.0.1",
+     version: "0.0.2",
      elixir: "~> 1.1-dev",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -28,7 +28,7 @@ defmodule ExDocEPUB.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [
-      {:earmark, "~> 0.1"},
+      {:earmark, "~> 0.1.17"},
       {:ex_doc, "~> 0.8"}
     ]
   end
