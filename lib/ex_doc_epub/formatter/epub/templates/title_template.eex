@@ -1,0 +1,10 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Hello World: My First EPUB</title>
+    <link type="text/css" rel="stylesheet" href="stylesheet.css" />
+  </head>
+  <body>
+    <h1>Hello World: My First EPUB</h1>
+    <div><img src="images/cover.png" alt="Title page"/></div>
+  </body>
+</html>
