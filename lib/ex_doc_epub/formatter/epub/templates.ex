@@ -79,7 +79,7 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
     mimetype_template: [],
     content_template: [],
     toc_template: [],
-    title_template: [],
+    title_template: [:config],
     module_template: []
   ]
 

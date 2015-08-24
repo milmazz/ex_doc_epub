@@ -1,10 +1,15 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
   <head>
-    <title>Hello World: My First EPUB</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible">
+    <title><%= config.project %> v<%= config.version %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc">
     <link type="text/css" rel="stylesheet" href="stylesheet.css" />
   </head>
   <body>
-    <h1>Hello World: My First EPUB</h1>
-    <div><img src="images/cover.png" alt="Title page"/></div>
+    <h1><%= config.project %></h1>
+    <h2>v<%= config.version %></h2>
   </body>
 </html>

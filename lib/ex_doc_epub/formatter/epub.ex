@@ -32,10 +32,10 @@ defmodule ExDocEPUB.Formatter.EPUB do
     generate_container(output)
     generate_content(output)
     generate_toc(output)
-    generate_title(output)
+    generate_title(output, config)
     generate_module(output)
 
-    generate_epub(output)
+    #generate_epub(output)
     #File.rm_rf!(output)
   end
 
@@ -82,8 +82,8 @@ defmodule ExDocEPUB.Formatter.EPUB do
     File.write("{output}/OEBPS/toc.ncx", content)
   end
 
-  defp generate_title(output) do
-    content = Templates.title_template()
+  defp generate_title(output, config) do
+    content = Templates.title_template(config)
     File.write("#{output}/OEBPS/title.html", content)
   end
 
@@ -92,13 +92,13 @@ defmodule ExDocEPUB.Formatter.EPUB do
     File.write("#{output}/OEBPS/module.html", content)
   end
 
-  defp generate_epub(output) do
+  #defp generate_epub(output) do
     #zip -0Xq book.epub mimetype
     #zip -Xr9Dq book.epub *
-    project = "elixir.epub"
+    #project = "elixir.epub"
     #{:ok, _} = :zip.create(String.to_char_list(project),
     #             files_to_add(output),
     #             uncompress: ['mimetype'])
-    :ok
-  end
+    #:ok
+  #end
 end
