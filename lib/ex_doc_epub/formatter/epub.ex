@@ -91,12 +91,12 @@ defmodule ExDocEPUB.Formatter.EPUB do
 
   defp generate_list(output, config, nodes) do
     nodes
-    |> Enum.map(&Task.async(fn -> generate_module_page(output, &1, config) end))
+    |> Enum.map(&Task.async(fn -> generate_module_page(output, config, &1) end))
     |> Enum.map(&Task.await/1)
   end
 
   defp generate_module_page(output, config, node) do
-    content = Templates.module_page(node, config)
+    content = Templates.module_page(config, node)
     File.write("#{output}/OEBPS/#{node.id}.html", content)
   end
 

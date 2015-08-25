@@ -8,13 +8,12 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
   @doc """
   Generate content from the module template for a given `node`
   """
-  def module_page(node, config) do
-    #types       = node.typespecs
+  def module_page(config, node) do
+    types       = node.typespecs
     functions   = Enum.filter node.docs, & &1.type in [:def]
     macros      = Enum.filter node.docs, & &1.type in [:defmacro]
     callbacks   = Enum.filter node.docs, & &1.type in [:defcallback, :defmacrocallback]
-    #module_template(config, node, types, functions, macros, callbacks)
-    module_template(config, node, functions, macros, callbacks)
+    module_template(config, node, types, functions, macros, callbacks)
   end
 
   # Get the full specs from a function, already in HTML form.
@@ -68,8 +67,7 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
 
   templates = [
     detail_template: [:node, :_module],
-    #module_template: [:config, :module, :types, :functions, :macros, :callbacks],
-    module_template: [:config, :module, :functions, :macros, :callbacks],
+    module_template: [:config, :module, :types, :functions, :macros, :callbacks],
     #overview_entry_template: [:node],
     #overview_template: [:config, :modules, :exceptions, :protocols, :has_readme],
     #readme_template: [:config, :modules, :exceptions, :protocols, :content],
