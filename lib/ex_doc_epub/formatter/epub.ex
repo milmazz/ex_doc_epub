@@ -90,7 +90,7 @@ defmodule ExDocEPUB.Formatter.EPUB do
   end
 
   defp generate_list(output, config, nodes) do
-    File.mkdir_p("#{output}/modules")
+    File.mkdir_p("#{output}/OEBPS/modules")
     nodes
     |> Enum.map(&Task.async(fn -> generate_module_page(output, config, &1) end))
     |> Enum.map(&Task.await/1)
