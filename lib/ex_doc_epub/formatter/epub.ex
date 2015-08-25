@@ -33,7 +33,9 @@ defmodule ExDocEPUB.Formatter.EPUB do
     generate_content(output)
     generate_toc(output)
     generate_title(output, config)
-    generate_module(output)
+    generate_list(output, config, modules)
+    generate_list(output, config, exceptions)
+    generate_list(output, config, protocols)
 
     #generate_epub(output)
     #File.rm_rf!(output)
@@ -53,7 +55,7 @@ defmodule ExDocEPUB.Formatter.EPUB do
   end
 
   defp generate_assets(output, _config) do
-    Enum.each assets, fn({pattern, dir }) ->
+    Enum.each assets, fn({pattern, _dir}) ->
       Enum.map Path.wildcard(pattern), fn(file) ->
         base = Path.basename(file)
         File.copy(file, "#{output}/OEBPS/#{base}")
@@ -79,7 +81,7 @@ defmodule ExDocEPUB.Formatter.EPUB do
 
   defp generate_toc(output) do
     content = Templates.toc_template()
-    File.write("{output}/OEBPS/toc.ncx", content)
+    File.write("#{output}/OEBPS/toc.ncx", content)
   end
 
   defp generate_title(output, config) do
@@ -87,9 +89,15 @@ defmodule ExDocEPUB.Formatter.EPUB do
     File.write("#{output}/OEBPS/title.html", content)
   end
 
-  defp generate_module(output) do
-    content = Templates.module_template()
-    File.write("#{output}/OEBPS/module.html", content)
+  defp generate_list(output, config, nodes) do
+    nodes
+    |> Enum.map(&Task.async(fn -> generate_module_page(output, &1, config) end))
+    |> Enum.map(&Task.await/1)
+  end
+
+  defp generate_module_page(output, config, node) do
+    content = Templates.module_page(node, config)
+    File.write("#{output}/OEBPS/#{node.id}.html", content)
   end
 
   #defp generate_epub(output) do
