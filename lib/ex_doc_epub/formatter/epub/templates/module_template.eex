@@ -21,9 +21,6 @@
     <%= unless Enum.empty?(functions) and Enum.empty?(macros) do %>
       <li><a href="#summary-details">Summary</a></li>
     <% end %>
-    <%= unless Enum.empty?(types) do %>
-      <li><a href="#types-details">Types</a></li>
-    <% end %>
     <%= unless Enum.empty?(functions) do %>
       <li><a href="#functions-details">Functions</a></li>
     <% end %>
@@ -45,13 +42,6 @@
       <table class="summary">
         <%= for node <- Enum.sort(functions ++ macros, &(&1.id <= &2.id)), do: summary_template(node) %>
       </table>
-    </section>
-  <% end %>
-
-  <%= unless Enum.empty?(types) do %>
-    <section id="types-details" class="details-list">
-      <h2>Types</h2>
-      <%= for node <- types, do: type_detail_template(node, module) %>
     </section>
   <% end %>
 
