@@ -64,7 +64,7 @@ defmodule ExDocEPUB.Formatter.EPUB do
   end
 
   defp generate_mimetype(output) do
-    content = Templates.mimetype_template()
+    content = "application/epub+zip"
     File.write("#{output}/mimetype", content)
   end
 
@@ -90,6 +90,7 @@ defmodule ExDocEPUB.Formatter.EPUB do
   end
 
   defp generate_list(output, config, nodes) do
+    File.mkdir_p("#{output}/modules")
     nodes
     |> Enum.map(&Task.async(fn -> generate_module_page(output, config, &1) end))
     |> Enum.map(&Task.await/1)
@@ -97,7 +98,7 @@ defmodule ExDocEPUB.Formatter.EPUB do
 
   defp generate_module_page(output, config, node) do
     content = Templates.module_page(config, node)
-    File.write("#{output}/OEBPS/#{node.id}.html", content)
+    File.write("#{output}/OEBPS/modules/#{node.id}.html", content)
   end
 
   #defp generate_epub(output) do

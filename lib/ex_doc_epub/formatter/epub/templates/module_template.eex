@@ -51,7 +51,7 @@
   <%= unless Enum.empty?(types) do %>
     <section id="types-details" class="details-list">
       <h2>Types</h2>
-      <%= for node <- types, do: type_detail_template(node, module) %>
+      <%= for node <- types, do: type_detail_template(node) %>
     </section>
   <% end %>
 

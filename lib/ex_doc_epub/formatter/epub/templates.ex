@@ -72,9 +72,8 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
     #overview_template: [:config, :modules, :exceptions, :protocols, :has_readme],
     #readme_template: [:config, :modules, :exceptions, :protocols, :content],
     summary_template: [:node],
-    type_detail_template: [:node, :_module],
+    type_detail_template: [:node],
     container_template: [],
-    mimetype_template: [],
     content_template: [],
     toc_template: [],
     title_template: [:config]
