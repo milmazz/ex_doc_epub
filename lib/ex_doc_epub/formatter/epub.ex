@@ -40,14 +40,17 @@ defmodule ExDocEPUB.Formatter.EPUB do
   end
 
   defp assets do
-   [{ templates_path("css/*.css"), "." }]
+   [{ templates_path("css/*.css"), "OEBPS/css" }]
   end
 
   defp generate_assets(output, _config) do
-    Enum.each assets, fn({pattern, _dir}) ->
+    Enum.each assets, fn({pattern, dir}) ->
+      output = "#{output}/#{dir}"
+      File.mkdir_p output
+
       Enum.map Path.wildcard(pattern), fn(file) ->
         base = Path.basename(file)
-        File.copy(file, "#{output}/OEBPS/#{base}")
+        File.copy(file, "#{output}/#{base}")
       end
     end
   end
