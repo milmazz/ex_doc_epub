@@ -24,14 +24,11 @@ defmodule ExDocEPUB.Formatter.EPUB do
 
     #has_readme = config.readme && generate_readme(output, module_nodes, config, modules, exceptions, protocols)
     #generate_overview(modules, exceptions, protocols, output, config, has_readme)
-    #generate_list(modules, all, output, config, has_readme)
-    #generate_list(exceptions, all, output, config, has_readme)
-    #generate_list(protocols, all, output, config, has_readme)
 
     generate_mimetype(output)
     generate_container(output)
-    generate_content(output)
-    generate_toc(output)
+    generate_content(output, config, all)
+    generate_toc(output, config)
     generate_title(output, config)
     generate_list(output, config, modules)
     generate_list(output, config, exceptions)
@@ -74,13 +71,13 @@ defmodule ExDocEPUB.Formatter.EPUB do
     File.write("#{output}/META-INF/container.xml", content)
   end
 
-  defp generate_content(output) do
-    content = Templates.content_template()
+  defp generate_content(output, config, all) do
+    content = Templates.content_template(config, all)
     File.write("#{output}/OEBPS/content.opf", content)
   end
 
-  defp generate_toc(output) do
-    content = Templates.toc_template()
+  defp generate_toc(output, config) do
+    content = Templates.toc_template(config)
     File.write("#{output}/OEBPS/toc.ncx", content)
   end
 
