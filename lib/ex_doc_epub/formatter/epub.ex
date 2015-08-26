@@ -28,7 +28,7 @@ defmodule ExDocEPUB.Formatter.EPUB do
     generate_mimetype(output)
     generate_container(output)
     generate_content(output, config, all)
-    generate_toc(output, config)
+    generate_toc(output, config, all)
     generate_title(output, config)
     generate_list(output, config, modules)
     generate_list(output, config, exceptions)
@@ -76,8 +76,8 @@ defmodule ExDocEPUB.Formatter.EPUB do
     File.write("#{output}/OEBPS/content.opf", content)
   end
 
-  defp generate_toc(output, config) do
-    content = Templates.toc_template(config)
+  defp generate_toc(output, config, all) do
+    content = Templates.toc_template(config, all)
     File.write("#{output}/OEBPS/toc.ncx", content)
   end
 

@@ -24,5 +24,13 @@
       </navLabel>
       <content src="module.html"/>
     </navPoint>
+    <%= for node <- all do %>
+      <navPoint id="<%= node.id %>" playOrder="2">
+      <navLabel>
+        <text>Module: <%= node.id %></text>
+      </navLabel>
+      <content src="modules/<%= node.id %>.html"/>
+    </navPoint>
+    <% end %>
   </navMap>
 </ncx>
