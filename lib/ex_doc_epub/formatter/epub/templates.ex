@@ -65,17 +65,20 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
     end
   end
 
+  defp valid_id(binary) do
+    String.replace(binary, ~r/[^A-Za-z0-9:_.-]/, "")
+  end
+
   templates = [
     detail_template: [:node, :_module],
     module_template: [:config, :module, :types, :functions, :macros, :callbacks],
-    #overview_entry_template: [:node],
-    #overview_template: [:config, :modules, :exceptions, :protocols, :has_readme],
-    #readme_template: [:config, :modules, :exceptions, :protocols, :content],
     summary_template: [:node],
     type_detail_template: [:node],
     container_template: [],
-    content_template: [:config, :all],
-    toc_template: [:config, :all],
+    ibooks_template: [],
+    content_template: [:config, :nodes],
+    toc_template: [:config, :nodes],
+    nav_template: [:config, :nodes],
     title_template: [:config]
   ]
 

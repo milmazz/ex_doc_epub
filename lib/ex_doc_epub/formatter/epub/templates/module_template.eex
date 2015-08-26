@@ -1,20 +1,14 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:epub="http://www.idpf.org/2007/ops">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" />
     <title><%= module.id %> - <%= config.project %> v<%= config.version %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="ExDoc" />
     <link type="text/css" rel="stylesheet" href="../css/stylesheet.css" />
   </head>
   <body>
   <h1><%= module.id %><%= if module.type do %> (<%= module.type %>)<% end%></h1>
-
-  <%= if module.moduledoc do %>
-    <section id="moduledoc" class="module-doc">
-      <%= to_html(module.moduledoc) %>
-    </section>
-  <% end %>
 
   <ul class="summary-links">
     <%= unless Enum.empty?(functions) and Enum.empty?(macros) do %>
@@ -33,6 +27,12 @@
       <li><a href="#callbacks-details">Callbacks</a></li>
     <% end %>
   </ul>
+
+  <%= if module.moduledoc do %>
+    <section id="moduledoc" class="module-doc">
+      <%= to_html(module.moduledoc) %>
+    </section>
+  <% end %>
 
   <%= if module.source do %>
     <a href="<%= module.source %>" class="view-source">Source</a>

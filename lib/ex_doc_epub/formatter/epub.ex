@@ -24,15 +24,19 @@ defmodule ExDocEPUB.Formatter.EPUB do
 
     generate_mimetype(output)
     generate_container(output)
-    generate_content(output, config, all)
-    generate_toc(output, config, all)
+    generate_ibooks_display_options(output)
+    generate_content(output, config, modules, exceptions, protocols)
+    generate_toc(output, config, modules, exceptions, protocols)
+    generate_nav(output, config, modules, exceptions, protocols)
     generate_title(output, config)
     generate_list(output, config, modules)
     generate_list(output, config, exceptions)
     generate_list(output, config, protocols)
 
-    #generate_epub(output)
-    #File.rm_rf!(output)
+    {:ok, epub_file} = generate_epub(output, config)
+    delete_extras(output)
+
+    epub_file
   end
 
   defp templates_path(other) do
@@ -56,8 +60,7 @@ defmodule ExDocEPUB.Formatter.EPUB do
   end
 
   defp generate_mimetype(output) do
-    content = "application/epub+zip"
-    File.write("#{output}/mimetype", content)
+    File.write(output, "application/epub+zip")
   end
 
   defp generate_container(output) do
@@ -66,14 +69,25 @@ defmodule ExDocEPUB.Formatter.EPUB do
     File.write("#{output}/META-INF/container.xml", content)
   end
 
-  defp generate_content(output, config, all) do
-    content = Templates.content_template(config, all)
+  defp generate_ibooks_display_options(output) do
+    content = Templates.ibooks_template()
+    File.mkdir_p("#{output}/META-INF")
+    File.write("#{output}/META-INF/com.apple.ibooks.display-options.xml", content)
+  end
+
+  defp generate_content(output, config, modules, exceptions, protocols) do
+    content = Templates.content_template(config, modules ++ exceptions ++ protocols)
     File.write("#{output}/OEBPS/content.opf", content)
   end
 
-  defp generate_toc(output, config, all) do
-    content = Templates.toc_template(config, all)
+  defp generate_toc(output, config, modules, exceptions, protocols) do
+    content = Templates.toc_template(config, modules ++ exceptions ++ protocols)
     File.write("#{output}/OEBPS/toc.ncx", content)
+  end
+
+  defp generate_nav(output, config, modules, exceptions, protocols) do
+    content = Templates.nav_template(config, modules ++ exceptions ++ protocols)
+    File.write("#{output}/OEBPS/nav.html", content)
   end
 
   defp generate_title(output, config) do
@@ -93,13 +107,35 @@ defmodule ExDocEPUB.Formatter.EPUB do
     File.write("#{output}/OEBPS/modules/#{node.id}.html", content)
   end
 
-  #defp generate_epub(output) do
-    #zip -0Xq book.epub mimetype
-    #zip -Xr9Dq book.epub *
-    #project = "elixir.epub"
-    #{:ok, _} = :zip.create(String.to_char_list(project),
-    #             files_to_add(output),
-    #             uncompress: ['mimetype'])
-    #:ok
-  #end
+  defp generate_epub(output, config) do
+    output = Path.expand(output)
+    target_path = "#{output}/#{config.project}-v#{config.version}.epub" |> String.to_char_list
+    {:ok, zip_path} = :zip.create(target_path,
+                  files_to_add(output),
+                  uncompress: ['mimetype'])
+    {:ok, zip_path}
+  end
+
+  defp files_to_add(path) do
+    File.cd! path, fn ->
+      meta = Path.wildcard("META-INF/*")
+      oebps = Path.wildcard("OEBPS/**/*")
+
+      Enum.reduce meta ++ oebps ++ ["mimetype"], [], fn(f, acc) ->
+        case File.read(f) do
+          {:ok, bin} ->
+            [{f |> String.to_char_list, bin}|acc]
+          {:error, _} ->
+            acc
+        end
+      end
+    end
+  end
+
+  defp delete_extras(output) do
+    for target <- ["META-INF", "mimetype", "OEBPS"] do
+      File.rm_rf! "#{output}/#{target}"
+    end
+    :ok
+  end
 end
