@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible">
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" />
     <title><%= module.id %> - <%= config.project %> v<%= config.version %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc">
-    <link type="text/css" rel="stylesheet" href="../stylesheet.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="ExDoc" />
+    <link type="text/css" rel="stylesheet" href="../css/stylesheet.css" />
   </head>
   <body>
   <h1><%= module.id %><%= if module.type do %> (<%= module.type %>)<% end%></h1>
