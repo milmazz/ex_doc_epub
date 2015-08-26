@@ -18,14 +18,8 @@
       </navLabel>
       <content src="title.html"/>
     </navPoint>
-    <navPoint id="navpoint-2" playOrder="2">
-      <navLabel>
-        <text>Contents</text>
-      </navLabel>
-      <content src="module.html"/>
-    </navPoint>
-    <%= for node <- all do %>
-      <navPoint id="<%= node.id %>" playOrder="2">
+    <%= for {node, index} <- Enum.with_index(all) do %>
+      <navPoint id="<%= node.id %>" playOrder="<%= index + 2 %>">
       <navLabel>
         <text>Module: <%= node.id %></text>
       </navLabel>
