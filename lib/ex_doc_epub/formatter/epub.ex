@@ -22,9 +22,6 @@ defmodule ExDocEPUB.Formatter.EPUB do
     exceptions = HTML.filter_list(:exceptions, all)
     protocols = HTML.filter_list(:protocols, all)
 
-    #has_readme = config.readme && generate_readme(output, module_nodes, config, modules, exceptions, protocols)
-    #generate_overview(modules, exceptions, protocols, output, config, has_readme)
-
     generate_mimetype(output)
     generate_container(output)
     generate_content(output, config, all)
@@ -37,11 +34,6 @@ defmodule ExDocEPUB.Formatter.EPUB do
     #generate_epub(output)
     #File.rm_rf!(output)
   end
-
-  #defp generate_overview(modules, exceptions, protocols, output, config, has_readme) do
-    #  content = Templates.overview_template(config, modules, exceptions, protocols, has_readme)
-    #  :ok = File.write("#{output}/overview.html", content)
-    #end
 
   defp templates_path(other) do
     Path.expand("epub/templates/#{other}", __DIR__)
