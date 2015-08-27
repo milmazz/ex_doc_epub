@@ -65,6 +65,7 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
     end
   end
 
+  # Keep only valid characters for an XHTML ID element
   defp valid_id(binary) do
     String.replace(binary, ~r/[^A-Za-z0-9:_.-]/, "")
   end
@@ -74,8 +75,6 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
     module_template: [:config, :module, :types, :functions, :macros, :callbacks],
     summary_template: [:node],
     type_detail_template: [:node],
-    container_template: [],
-    ibooks_template: [],
     content_template: [:config, :nodes],
     toc_template: [:config, :nodes],
     nav_template: [:config, :nodes],

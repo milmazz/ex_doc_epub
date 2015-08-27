@@ -22,9 +22,6 @@ defmodule ExDocEPUB.Formatter.EPUB do
     exceptions = HTML.filter_list(:exceptions, all)
     protocols = HTML.filter_list(:protocols, all)
 
-    generate_mimetype(output)
-    generate_container(output)
-    generate_ibooks_display_options(output)
     generate_content(output, config, modules, exceptions, protocols)
     generate_toc(output, config, modules, exceptions, protocols)
     generate_nav(output, config, modules, exceptions, protocols)
@@ -44,35 +41,26 @@ defmodule ExDocEPUB.Formatter.EPUB do
   end
 
   defp assets do
-   [{ templates_path("css/*.css"), "OEBPS/css" }]
+   [
+     { templates_path("css/*.css"), "OEBPS/css" },
+     { templates_path("assets/*.xml"), "META-INF" },
+     { templates_path("assets/mimetype"), "." }
+   ]
   end
 
   defp generate_assets(output, _config) do
     Enum.each assets, fn({pattern, dir}) ->
       output = "#{output}/#{dir}"
-      File.mkdir_p output
+      
+      unless File.exists?(output) do
+        File.mkdir_p output
+      end
 
       Enum.map Path.wildcard(pattern), fn(file) ->
         base = Path.basename(file)
         File.copy(file, "#{output}/#{base}")
       end
     end
-  end
-
-  defp generate_mimetype(output) do
-    File.write(output, "application/epub+zip")
-  end
-
-  defp generate_container(output) do
-    content = Templates.container_template()
-    File.mkdir_p("#{output}/META-INF")
-    File.write("#{output}/META-INF/container.xml", content)
-  end
-
-  defp generate_ibooks_display_options(output) do
-    content = Templates.ibooks_template()
-    File.mkdir_p("#{output}/META-INF")
-    File.write("#{output}/META-INF/com.apple.ibooks.display-options.xml", content)
   end
 
   defp generate_content(output, config, modules, exceptions, protocols) do
