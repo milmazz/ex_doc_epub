@@ -7,7 +7,9 @@ Create documentation for Elixir projects in the EPUB format.
 Add `ex_doc_epub` to your list of dependencies in `mix.exs`:
 
     def deps do
-        [{:ex_doc_epub, "~> 0.0.1", only: :docs}]
+      [
+        {:ex_doc_epub, github: "milmazz/ex_doc_epub", only: :docs}
+      ]
     end
 
 Build your dependencies:
