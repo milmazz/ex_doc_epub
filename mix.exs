@@ -28,6 +28,7 @@ defmodule ExDocEPUB.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [
+      {:uuid, "~> 1.0"},
       {:earmark, "~> 0.1.17"},
       {:ex_doc, "~> 0.8"}
     ]
