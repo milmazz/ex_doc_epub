@@ -18,6 +18,7 @@
   </manifest>
   <spine toc="ncx">
     <itemref idref="cover" linear="no"/>
+    <itemref idref="nav"/>
     <%= for node <- nodes do %>
       <itemref idref="<%= node.id %>"/>
     <% end %>
