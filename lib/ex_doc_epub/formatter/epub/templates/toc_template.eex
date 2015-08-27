@@ -22,7 +22,7 @@
     <%= for {node, index} <- Enum.with_index(nodes) do %>
       <navPoint id="<%= valid_id node.id %>" playOrder="<%= index + 2 %>">
       <navLabel>
-        <text>Module: <%= node.id %></text>
+        <text><%= node.id %></text>
       </navLabel>
       <content src="modules/<%= node.id %>.html"/>
     </navPoint>
