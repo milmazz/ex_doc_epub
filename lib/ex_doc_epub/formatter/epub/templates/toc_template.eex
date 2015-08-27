@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN"
-                 "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
-<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+<ncx xmlns:ncx="http://www.daisy.org/z3986/2005/ncx/"
+     xmlns="http://www.daisy.org/z3986/2005/ncx/"
+     version="2005-1"
+     xml:lang="en">
   <head>
     <meta name="dtb:uid" content="urn:uuid:0cc33cbd-94e2-49c1-909a-72ae16bc2658"/>
     <meta name="dtb:depth" content="1"/>
@@ -18,8 +19,8 @@
       </navLabel>
       <content src="title.html"/>
     </navPoint>
-    <%= for {node, index} <- Enum.with_index(all) do %>
-      <navPoint id="<%= node.id %>" playOrder="<%= index + 2 %>">
+    <%= for {node, index} <- Enum.with_index(nodes) do %>
+      <navPoint id="<%= valid_id node.id %>" playOrder="<%= index + 2 %>">
       <navLabel>
         <text>Module: <%= node.id %></text>
       </navLabel>

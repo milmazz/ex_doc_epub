@@ -1,24 +1,25 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="http://www.idpf.org/2007/opf"
-         xmlns:dc="http://purl.org/dc/elements/1.1/"
-         unique-identifier="<%= config.project %>" version="3.0">
-  <metadata>
+         unique-identifier="project-<%= valid_id config.project %>"
+         version="3.0">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
     <dc:title><%= config.project %> - <%= config.version %></dc:title>
-    <dc:identifier id="<%= config.project %>">urn:uuid:0cc33cbd-94e2-49c1-909a-72ae16bc2658</dc:identifier>
+    <dc:identifier id="project-<%= valid_id config.project %>">urn:uuid:0cc33cbd-94e2-49c1-909a-72ae16bc2658</dc:identifier>
     <dc:language>en-US</dc:language>
   </metadata>
   <manifest>
-    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" properties="nav"/>
-    <item id="nav" href="nav.html" media-type="application/xhtml+xml"/>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+    <item id="nav" href="nav.html" media-type="application/xhtml+xml" properties="nav"/>
     <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
-    <%= for node <- all do %>
+    <%= for node <- nodes do %>
       <item id="<%= node.id %>" href="modules/<%= node.id %>.html" media-type="application/xhtml+xml"/>
     <% end %>
     <item id="css" href="css/stylesheet.css" media-type="text/css"/>
+    <item id="page-styles" href="css/page_styles.css" media-type="text/css"/>
   </manifest>
   <spine toc="ncx">
     <itemref idref="cover" linear="no"/>
-    <%= for node <- all do %>
+    <%= for node <- nodes do %>
       <itemref idref="<%= node.id %>"/>
     <% end %>
   </spine>
