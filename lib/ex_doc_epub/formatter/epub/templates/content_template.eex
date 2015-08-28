@@ -4,7 +4,7 @@
          version="3.0">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
     <dc:title><%= config.project %> - <%= config.version %></dc:title>
-    <dc:identifier id="project-<%= valid_id config.project %>"><%= UUID.uuid4(:urn) %></dc:identifier>
+    <dc:identifier id="project-<%= valid_id config.project %>"><%= uuid %></dc:identifier>
     <dc:language>en-US</dc:language>
   </metadata>
   <manifest>

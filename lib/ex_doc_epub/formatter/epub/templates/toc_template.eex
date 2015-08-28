@@ -4,7 +4,7 @@
      version="2005-1"
      xml:lang="en">
   <head>
-    <meta name="dtb:uid" content="urn:uuid:0cc33cbd-94e2-49c1-909a-72ae16bc2658"/>
+    <meta name="dtb:uid" content="<%= uuid %>"/>
     <meta name="dtb:depth" content="1"/>
     <meta name="dtb:totalPageCount" content="0"/>
     <meta name="dtb:maxPageNumber" content="0"/>
