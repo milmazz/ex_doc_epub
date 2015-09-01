@@ -75,7 +75,7 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
     module_template: [:config, :module, :types, :functions, :macros, :callbacks],
     summary_template: [:node],
     type_detail_template: [:node],
-    content_template: [:config, :nodes, :uuid],
+    content_template: [:config, :nodes, :uuid, :datetime],
     toc_template: [:config, :nodes, :uuid],
     nav_template: [:config, :nodes],
     title_template: [:config]
