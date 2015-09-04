@@ -19,8 +19,19 @@
       </navLabel>
       <content src="title.html"/>
     </navPoint>
+    <%= if has_readme do %>
+      <navPoint id="README" playOrder="2">
+        <navLabel>
+          <text>README</text>
+        </navLabel>
+        <content src="modules/README.html"/>
+      </navPoint>
+      <% start_value = 3 %>
+    <% else %>
+      <% start_value = 2 %>
+    <% end %>
     <%= for {node, index} <- Enum.with_index(nodes) do %>
-      <navPoint id="<%= valid_id node.id %>" playOrder="<%= index + 2 %>">
+      <navPoint id="<%= valid_id node.id %>" playOrder="<%= index + start_value %>">
       <navLabel>
         <text><%= node.id %></text>
       </navLabel>

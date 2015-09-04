@@ -13,7 +13,7 @@ defmodule ExDocEPUB.Formatter.EPUB do
   def run(module_nodes, config) when is_map(config) do
     output = Path.expand(config.output)
     File.rm_rf!(output)
-    :ok = File.mkdir_p("#{output}/OEBPS")
+    :ok = File.mkdir_p("#{output}/OEBPS/modules")
 
     generate_assets(output, config)
 
@@ -22,11 +22,13 @@ defmodule ExDocEPUB.Formatter.EPUB do
     exceptions = HTML.filter_list(:exceptions, all)
     protocols = HTML.filter_list(:protocols, all)
 
+    has_readme = config.readme && generate_readme(output, config, module_nodes)
+
     uuid = "urn:uuid:#{uuid4()}"
     datetime = format_datetime()
-    generate_content(output, config, modules, exceptions, protocols, uuid, datetime)
-    generate_toc(output, config, modules, exceptions, protocols, uuid)
-    generate_nav(output, config, modules, exceptions, protocols)
+    generate_content(output, config, modules, exceptions, protocols, uuid, datetime, has_readme)
+    generate_toc(output, config, modules, exceptions, protocols, uuid, has_readme)
+    generate_nav(output, config, modules, exceptions, protocols, has_readme)
     generate_title(output, config)
     generate_list(output, config, modules)
     generate_list(output, config, exceptions)
@@ -82,18 +84,34 @@ defmodule ExDocEPUB.Formatter.EPUB do
     end
   end
 
-  defp generate_content(output, config, modules, exceptions, protocols, uuid, datetime) do
-    content = Templates.content_template(config, modules ++ exceptions ++ protocols, uuid, datetime)
+  defp generate_readme(output, config, module_nodes) do
+    readme_path = Path.expand(config.readme)
+    write_readme(output, config, module_nodes, File.read(readme_path))
+  end
+
+  defp write_readme(output, config, module_nodes, {:ok, content}) do
+    content = HTML.Autolink.project_doc(content, module_nodes)
+    readme_html = Templates.readme_template(config, content)
+    :ok = File.write("#{output}/OEBPS/modules/README.html", readme_html)
+    true
+  end
+
+  defp write_readme(_, _, _, _) do
+    false
+  end
+
+  defp generate_content(output, config, modules, exceptions, protocols, uuid, datetime, has_readme) do
+    content = Templates.content_template(config, modules ++ exceptions ++ protocols, uuid, datetime, has_readme)
     File.write("#{output}/OEBPS/content.opf", content)
   end
 
-  defp generate_toc(output, config, modules, exceptions, protocols, uuid) do
-    content = Templates.toc_template(config, modules ++ exceptions ++ protocols, uuid)
+  defp generate_toc(output, config, modules, exceptions, protocols, uuid, has_readme) do
+    content = Templates.toc_template(config, modules ++ exceptions ++ protocols, uuid, has_readme)
     File.write("#{output}/OEBPS/toc.ncx", content)
   end
 
-  defp generate_nav(output, config, modules, exceptions, protocols) do
-    content = Templates.nav_template(config, modules ++ exceptions ++ protocols)
+  defp generate_nav(output, config, modules, exceptions, protocols, has_readme) do
+    content = Templates.nav_template(config, modules ++ exceptions ++ protocols, has_readme)
     File.write("#{output}/OEBPS/nav.html", content)
   end
 
@@ -103,7 +121,6 @@ defmodule ExDocEPUB.Formatter.EPUB do
   end
 
   defp generate_list(output, config, nodes) do
-    File.mkdir_p("#{output}/OEBPS/modules")
     nodes
     |> Enum.map(&Task.async(fn -> generate_module_page(output, config, &1) end))
     |> Enum.map(&Task.await/1)
