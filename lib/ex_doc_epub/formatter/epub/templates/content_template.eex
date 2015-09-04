@@ -12,6 +12,9 @@
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
     <item id="nav" href="nav.html" media-type="application/xhtml+xml" properties="nav"/>
     <item id="cover" href="title.html" media-type="application/xhtml+xml"/>
+    <%= if has_readme do %>
+      <item id="readme" href="modules/README.html" media-type="application/xhtml+xml"/>
+    <% end %>
     <%= for node <- nodes do %>
       <item id="<%= node.id %>" href="modules/<%= node.id %>.html" media-type="application/xhtml+xml"/>
     <% end %>
@@ -20,6 +23,9 @@
   <spine toc="ncx">
     <itemref idref="cover" linear="no"/>
     <itemref idref="nav"/>
+    <%= if has_readme do %>
+      <itemref idref="readme"/>
+    <% end %>
     <%= for node <- nodes do %>
       <itemref idref="<%= node.id %>"/>
     <% end %>
