@@ -4,7 +4,7 @@ defmodule ExDocEPUB.Mixfile do
   def project do
     [app: :ex_doc_epub,
      version: "0.0.2",
-     elixir: "~> 1.1-dev",
+     elixir: "~> 1.0",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
