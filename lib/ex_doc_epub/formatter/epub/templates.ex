@@ -75,11 +75,11 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
     detail_template: [:node, :_module],
     module_template: [:config, :module, :types, :functions, :macros, :callbacks],
     nav_template: [:config, :nodes, :has_readme],
-    readme_template: [:config, :content]
+    readme_template: [:config, :content],
     summary_template: [:node],
     title_template: [:config],
     toc_template: [:config, :nodes, :uuid, :has_readme],
-    type_detail_template: [:node],
+    type_detail_template: [:node]
   ]
 
   Enum.each templates, fn({ name, args }) ->
