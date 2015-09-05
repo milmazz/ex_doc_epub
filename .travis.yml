@@ -9,3 +9,6 @@ notifications:
     - milmazz@gmail.com
 script:
   - "mix do local.hex --force, deps.get && mix test"
+cache:
+  directories:
+    - deps
