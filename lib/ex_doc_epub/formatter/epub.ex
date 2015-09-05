@@ -131,9 +131,9 @@ defmodule ExDocEPUB.Formatter.EPUB do
   # Helper to format Erlang datetime tuple
   defp format_datetime do
     {{year, month, day}, {hour, min, sec}} = :calendar.universal_time()
-    date = Enum.map_join([{year, 4}, {month, 2}, {day, 2}], "-", fn({k, v}) -> zero_pad(k, v) end)
-    time = Enum.map_join([{hour, 2}, {min, 2}, {sec, 2}], ":", fn({k, v}) -> zero_pad(k, v) end)
-    "#{date}T#{time}Z"
+    list = [year, month, day, hour, min, sec]
+    :io_lib.format("~4..0B-~2..0B-~2..0BT~2..0B:~2..0B:~2..0BZ", list)
+    |> IO.iodata_to_binary
   end
 
   defp generate_module_page(output, config, node) do
@@ -164,10 +164,5 @@ defmodule ExDocEPUB.Formatter.EPUB do
 
   defp write_readme(_, _, _, _) do
     false
-  end
-
-  defp zero_pad(val, count) do
-    num = Integer.to_string(val)
-    :binary.copy("0", count - byte_size(num)) <> num
   end
 end
