@@ -1,0 +1,11 @@
+sudo: false
+language: erlang
+elixir:
+  - 1.0.2
+otp_release:
+  - 17.4
+notifications:
+  recipients:
+    - milmazz@gmail.com
+script:
+  - "mix do local.hex --force, deps.get && mix test"
