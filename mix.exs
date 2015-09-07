@@ -1,13 +1,25 @@
 defmodule ExDocEPUB.Mixfile do
   use Mix.Project
 
+  @version "0.0.2"
+
   def project do
     [app: :ex_doc_epub,
-     version: "0.0.2",
+     version: @version,
      elixir: "~> 1.0",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps,
+
+     # Hex.pm
+     description: description,
+     package: package,
+
+     # Docs
+     name: "ExDocEPUB",
+     docs: [readme: "README.md",
+            source_ref: "v#{@version}", main: "ExDocEPUB.Formatter.EPUB",
+            source_url: "https://github.com/milmazz/ex_doc_epub"]]
   end
 
   # Configuration for the OTP application
@@ -27,9 +39,20 @@ defmodule ExDocEPUB.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [
-      {:earmark, "~> 0.1.17", optional: true},
-      {:ex_doc, "~> 0.8"}
-    ]
+    [{:earmark, "~> 0.1.17", optional: true},
+      {:ex_doc, "~> 0.8"}]
+  end
+
+  defp description do
+    """
+    Create documentation for Elixir projects in EPUB format
+    """
+  end
+
+  defp package do
+    [contributors: ["Milton Mazzarri"],
+     licenses: ["MIT"],
+     links: %{"GitHub" => "https://github.com/milmazz/ex_doc_epub",
+              "Docs" => "http://hexdocs.pm/ex_doc_epub/#{@version}"}]
   end
 end
