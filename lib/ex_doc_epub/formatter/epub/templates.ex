@@ -4,37 +4,29 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
 
   ## Functions
 
-  `content_template/5`: Creates the [Package Document Definition][package],
+  * `content_template/5`: Creates the [Package Document Definition][package],
   this definition encapsulates the publication metadata and the resource
   information that constitute the EPUB publication. This definition also
   includes the default reading order.
-
-  `detail_template/2`: Returns the details of an individual *function*,
+  * `detail_template/2`: Returns the details of an individual *function*,
   *macro* or *callback*.  This function is required used by
   `module_template/6`.
-
-  `module_template/6`: Creates a chapter which contains all the details
+  * `module_template/6`: Creates a chapter which contains all the details
   about an individual module, this chapter can include the following
   sections: *functions*, *macros*, *types*, *callbacks*.
-
-  `nav_template/3`: Creates the table of contents. This template follows the
+  * `nav_template/3`: Creates the table of contents. This template follows the
   [EPUB Navigation Document Definition][navigation].
-
-  `readme_template/2`: Creates a new chapter when the user provides a
+  * `readme_template/2`: Creates a new chapter when the user provides a
   `README` file.
-
-  `summary_template/1`: Creates a summary of the *functions* and *macros*
+  * `summary_template/1`: Creates a summary of the *functions* and *macros*
   available for an individual module, this function is required by
   `module_template/6`.
-
-  `title_template/1`: Creates the cover page for the EPUB document.
-
-  `toc_template/4`: Creates an *Navigation Center eXtended* document (as
+  * `title_template/1`: Creates the cover page for the EPUB document.
+  * `toc_template/4`: Creates an *Navigation Center eXtended* document (as
   defined in OPF 2.0.1), this is for compatibility purposes with EPUB 2
   Reading Systems.  EPUB 3 Reading Systems must ignore the NCX in favor of
   the [EPUB Navigation Document][navigation].
-
-  `type_detail_template/1`: Returns all the details of an individual
+  * `type_detail_template/1`: Returns all the details of an individual
   *type*. This function is required by `module_template/6`.
 
   [package]: http://www.idpf.org/epub/30/spec/epub30-publications.html#sec-package-def
