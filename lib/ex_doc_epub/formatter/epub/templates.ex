@@ -110,32 +110,20 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
   end
 
   templates = [
-    content_template: [:config, :nodes, :uuid, :datetime, :has_readme],
-    detail_template: [:node, :_module],
-    module_template: [:config, :module, :types, :functions, :macros, :callbacks],
-    nav_template: [:config, :nodes, :has_readme],
-    readme_template: [:config, :content],
-    summary_template: [:node],
-    title_template: [:config],
-    toc_template: [:config, :nodes, :uuid, :has_readme],
-    type_detail_template: [:node]
+    content_template: {[:config, :nodes, :uuid, :datetime, :has_readme], @content_template_doc},
+    detail_template: {[:node, :_module], @detail_template_doc},
+    module_template: {[:config, :module, :types, :functions, :macros, :callbacks], @module_template_doc},
+    nav_template: {[:config, :nodes, :has_readme], @nav_template_doc},
+    readme_template: {[:config, :content], @readme_template_doc},
+    summary_template: {[:node], @summary_template_doc},
+    title_template: {[:config], @title_template_doc},
+    toc_template: {[:config, :nodes, :uuid, :has_readme], @toc_template_doc},
+    type_detail_template: {[:node], @type_detail_template_doc}
   ]
 
-  template_docs = %{
-    content_template: @content_template_doc,
-    detail_template: @detail_template_doc,
-    module_template: @module_template_doc,
-    nav_template: @nav_template_doc,
-    readme_template: @readme_template_doc,
-    summary_template: @summary_template_doc,
-    title_template: @title_template_doc,
-    toc_template: @toc_template_doc,
-    type_detail_template: @type_detail_template_doc
-  }
-
-  Enum.each templates, fn({ name, args }) ->
+  Enum.each templates, fn({ name, {args, docs} }) ->
     filename = Path.expand("templates/#{name}.eex", __DIR__)
-    @doc Map.get(template_docs, name)
+    @doc docs
     EEx.function_from_file :def, name, filename, args
   end
 end
