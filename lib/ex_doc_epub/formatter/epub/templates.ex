@@ -24,8 +24,8 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
   Creates the table of contents. This template follows the
   [EPUB Navigation Document Definition](http://www.idpf.org/epub/30/spec/epub30-contentdocs.html#sec-xhtml-nav).
   """
-  @readme_template_doc """
-  Creates a new chapter when the user provides a `README` file.
+  @extra_template_doc """
+  Creates a new chapter when the user provides additional files.
   """
   @summary_template_doc """
   Creates a summary of the *functions* and *macros* available for an individual
@@ -109,15 +109,17 @@ defmodule ExDocEPUB.Formatter.EPUB.Templates do
     String.replace(binary, ~r/[^A-Za-z0-9:_.-]/, "")
   end
 
+  defp extra_title(path), do: path |> String.upcase |> Path.basename(".MD")
+
   templates = [
-    content_template: {[:config, :nodes, :uuid, :datetime, :has_readme], @content_template_doc},
+    content_template: {[:config, :nodes, :uuid, :datetime], @content_template_doc},
     detail_template: {[:node, :_module], @detail_template_doc},
     module_template: {[:config, :module, :types, :functions, :macros, :callbacks], @module_template_doc},
-    nav_template: {[:config, :nodes, :has_readme], @nav_template_doc},
-    readme_template: {[:config, :content], @readme_template_doc},
+    nav_template: {[:config, :nodes], @nav_template_doc},
+    extra_template: {[:config, :content], @extra_template_doc},
     summary_template: {[:node], @summary_template_doc},
     title_template: {[:config], @title_template_doc},
-    toc_template: {[:config, :nodes, :uuid, :has_readme], @toc_template_doc},
+    toc_template: {[:config, :nodes, :uuid], @toc_template_doc},
     type_detail_template: {[:node], @type_detail_template_doc}
   ]
 

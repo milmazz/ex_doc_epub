@@ -22,13 +22,13 @@ defmodule ExDocEPUB.Formatter.EPUB do
     exceptions = HTML.filter_list(:exceptions, all)
     protocols = HTML.filter_list(:protocols, all)
 
-    has_readme = config.readme && generate_readme(output, config, module_nodes)
+    generate_extras(output, config, module_nodes)
 
     uuid = "urn:uuid:#{uuid4()}"
     datetime = format_datetime()
-    generate_content(output, config, modules, exceptions, protocols, uuid, datetime, has_readme)
-    generate_toc(output, config, modules, exceptions, protocols, uuid, has_readme)
-    generate_nav(output, config, modules, exceptions, protocols, has_readme)
+    generate_content(output, config, modules, exceptions, protocols, uuid, datetime)
+    generate_toc(output, config, modules, exceptions, protocols, uuid)
+    generate_nav(output, config, modules, exceptions, protocols)
     generate_title(output, config)
     generate_list(output, config, modules)
     generate_list(output, config, exceptions)
@@ -55,23 +55,49 @@ defmodule ExDocEPUB.Formatter.EPUB do
     end
   end
 
-  defp generate_readme(output, config, module_nodes) do
-    readme_path = Path.expand(config.readme)
-    write_readme(output, config, module_nodes, File.read(readme_path))
+  defp generate_extras(output, config, module_nodes) do
+    config.extras
+    |> Enum.map(&Task.async(fn -> generate_extra(&1, output, config, module_nodes) end))
+    |> Enum.map(&Task.await/1)
   end
 
-  defp generate_content(output, config, modules, exceptions, protocols, uuid, datetime, has_readme) do
-    content = Templates.content_template(config, modules ++ exceptions ++ protocols, uuid, datetime, has_readme)
+  defp generate_extra(input, output, config, module_nodes) do
+    file_extname =
+      input
+      |> Path.extname
+      |> String.downcase
+
+    if file_extname in [".md"] do
+      file_name =
+        input
+        |> Path.basename(".md")
+        |> String.upcase
+
+      content =
+        input
+        |> File.read!
+        |> HTML.Autolink.project_doc(module_nodes)
+
+      config = Map.put(config, :title, file_name)
+      extra_html = Templates.extra_template(config, content)
+      File.write!("#{output}/OEBPS/modules/#{file_name}.html", extra_html)
+    else
+      raise ArgumentError, "file format not recognized, allowed format is: .md"
+    end
+  end
+
+  defp generate_content(output, config, modules, exceptions, protocols, uuid, datetime) do
+    content = Templates.content_template(config, modules ++ exceptions ++ protocols, uuid, datetime)
     File.write("#{output}/OEBPS/content.opf", content)
   end
 
-  defp generate_toc(output, config, modules, exceptions, protocols, uuid, has_readme) do
-    content = Templates.toc_template(config, modules ++ exceptions ++ protocols, uuid, has_readme)
+  defp generate_toc(output, config, modules, exceptions, protocols, uuid) do
+    content = Templates.toc_template(config, modules ++ exceptions ++ protocols, uuid)
     File.write("#{output}/OEBPS/toc.ncx", content)
   end
 
-  defp generate_nav(output, config, modules, exceptions, protocols, has_readme) do
-    content = Templates.nav_template(config, modules ++ exceptions ++ protocols, has_readme)
+  defp generate_nav(output, config, modules, exceptions, protocols) do
+    content = Templates.nav_template(config, modules ++ exceptions ++ protocols)
     File.write("#{output}/OEBPS/nav.html", content)
   end
 
@@ -153,16 +179,5 @@ defmodule ExDocEPUB.Formatter.EPUB do
     <<u0::32, u1::16, u2::16, u3::16, u4::48>> = bin
 
     Enum.map_join([<<u0::32>>, <<u1::16>>, <<u2::16>>, <<u3::16>>, <<u4::48>>], <<45>>, &(Base.encode16(&1, case: :lower)))
-  end
-
-  defp write_readme(output, config, module_nodes, {:ok, content}) do
-    content = HTML.Autolink.project_doc(content, module_nodes)
-    readme_html = Templates.readme_template(config, content)
-    :ok = File.write("#{output}/OEBPS/modules/README.html", readme_html)
-    true
-  end
-
-  defp write_readme(_, _, _, _) do
-    false
   end
 end

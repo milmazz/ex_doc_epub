@@ -3,12 +3,6 @@ defmodule ExDocEPUB.Formatter.EPUBTest do
 
   alias ExDocEPUB.Formatter.EPUB
 
-  setup_all do
-    {:ok, _} = File.copy("test/fixtures/README.md", "test/tmp/README.md")
-
-    :ok
-  end
-
   setup do
     {:ok, _} = File.rm_rf(output_dir)
     :ok = File.mkdir(output_dir)
@@ -33,7 +27,7 @@ defmodule ExDocEPUB.Formatter.EPUBTest do
       output: "test/tmp/doc",
       source_root: beam_dir,
       source_beam: beam_dir,
-      readme: "test/tmp/README.md",
+      extras: ["test/fixtures/README.md"],
     ]
   end
 
@@ -133,9 +127,9 @@ defmodule ExDocEPUB.Formatter.EPUBTest do
     content = File.read!("#{output_dir}/OEBPS/modules/README.html")
 
     assert content =~ ~r{<title>README [^<]*</title>}
-    assert content =~ ~r{<a href="RandomError.html"><code class="inline">RandomError</code>}
-    assert content =~ ~r{<a href="CustomBehaviourImpl.html#hello/1"><code class="inline">CustomBehaviourImpl.hello/1</code>}
-    assert content =~ ~r{<a href="TypesAndSpecs.Sub.html"><code class="inline">TypesAndSpecs.Sub</code></a>}
+    assert content =~ ~r{<a href="RandomError.html"><code>RandomError</code>}
+    assert content =~ ~r{<a href="CustomBehaviourImpl.html#hello/1"><code>CustomBehaviourImpl.hello/1</code>}
+    assert content =~ ~r{<a href="TypesAndSpecs.Sub.html"><code>TypesAndSpecs.Sub</code></a>}
 
     content = File.read!("#{output_dir}/OEBPS/toc.ncx")
     assert content =~ ~r{<text>README</text>}
@@ -145,7 +139,7 @@ defmodule ExDocEPUB.Formatter.EPUBTest do
   end
 
   test "run should not generate the readme file" do
-    generate_docs_and_unzip(doc_config([readme: nil]))
+    generate_docs_and_unzip(doc_config([extras: []]))
 
     refute File.regular?("#{output_dir}/OEBPS/modules/README.html")
 

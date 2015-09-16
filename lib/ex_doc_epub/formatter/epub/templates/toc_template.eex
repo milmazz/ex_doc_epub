@@ -19,17 +19,15 @@
       </navLabel>
       <content src="title.html"/>
     </navPoint>
-    <%= if has_readme do %>
-      <navPoint id="README" playOrder="2">
+    <%= for {extra, index} <- config.extras |> Enum.sort |> Enum.with_index do %>
+      <navPoint id="<%= extra_title(extra) %>" playOrder="<%= index + 2 %>">
         <navLabel>
-          <text>README</text>
+        <text><%= extra_title(extra) %></text>
         </navLabel>
-        <content src="modules/README.html"/>
+        <content src="modules/<%= extra_title(extra) %>.html"/>
       </navPoint>
-      <% start_value = 3 %>
-    <% else %>
-      <% start_value = 2 %>
     <% end %>
+    <% start_value = Enum.count(config.extras) + 2 %>
     <%= for {node, index} <- Enum.with_index(nodes) do %>
       <navPoint id="<%= valid_id node.id %>" playOrder="<%= index + start_value %>">
       <navLabel>

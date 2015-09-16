@@ -40,7 +40,7 @@ defmodule ExDocEPUB.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     [{:earmark, "~> 0.1.17", optional: true},
-      {:ex_doc, "~> 0.8"}]
+      {:ex_doc, "~> 0.9"}]
   end
 
   defp description do
