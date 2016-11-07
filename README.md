@@ -1,31 +1,9 @@
-# ExDocEPUB
+# ExDocEPUB (deprecated)
 
-Create documentation for Elixir projects in the EPUB format.
+## :skull: This package is no longer maintained :skull:
 
-## Installation
+**Note**: Since [ExDoc][] v0.14.0 it is possible to generate EPUB documents for
+Elixir projects. For that reason, this package is no longer maintained. Please
+refer to [ExDoc][]'s documentation for more information.
 
-Add `ex_doc_epub` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:earmark, "~> 0.1.17", only: :docs}
-    {:ex_doc_epub, github: "milmazz/ex_doc_epub", only: :docs}
-  ]
-end
-```
-
-`ExDocEPUB` rely on [ExDoc](https://github.com/elixir-lang/ex_doc) to do the
-hard work!
-
-Build your dependencies:
-
-```bash
-MIX_ENV=docs mix do deps.get, compile
-```
-
-Build your docs:
-
-```bash
-MIX_ENV=docs mix docs.epub
-```
+[ExDoc]: https://github.com/elixir-lang/ex_doc
