@@ -36,7 +36,7 @@ defmodule ExDocEPUB.Mixfile do
   end
 
   defp package do
-    [contributors: ["Milton Mazzarri"],
+    [maintainers: ["Milton Mazzarri"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/milmazz/ex_doc_epub",
               "Docs" => "http://hexdocs.pm/ex_doc_epub/#{@version}"}]
