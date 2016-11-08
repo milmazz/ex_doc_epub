@@ -43,8 +43,8 @@ defmodule ExDocEPUB.Mixfile do
   end
 
   defp docs do
-    [readme: "readme.md",
-     source_ref: "v#{@version}", main: "ExDocEPUB.Formatter.EPUB",
+    [extras: ["README.md"],
+     source_ref: "v#{@version}", main: "readme",
      source_url: "https://github.com/milmazz/ex_doc_epub"]
   end
 end
